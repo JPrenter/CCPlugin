@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+
+
+        #mainContainer {
+    display: flex;
+    justify-content: center; /* This will center the direct children along the horizontal axis */
+    width: 100%; /* Take up full width */
+    box-sizing: border-box; /* Include padding and border in total width */
+}
+
+
+#filterSection {
+    width: 25%;  
+    align-self: flex-start;
+    border-right: 1px solid #e5e5e5;
+    border: 1px solid #e5e5e5;
+    border-radius: 5px;
+    overflow: auto;
+}
+
+#cardSectionParent {
+    width: 75%;  
+    align-self: flex-start;
+    padding: 20px;
+    overflow: auto;
+}
+
+.below-finder-content {
+    padding: 20px;
+}
+
+@media screen and (max-width: 768px) {.below-finder-content {
+    padding: 0px !important;
+}}
+
+#seeMoreButton {
+    display: block;
+    margin: 0 auto;
+}
+
+
+@media screen and (max-width: 768px) { 
+    #cardSectionParent {
+    width: 100%;  
+    align-self: flex-start;
+    padding: 0px;
+    overflow: auto;
+}}
+
+
+        .card {
+            border: 1px solid #e5e5e5;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        .slider-container {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.slider-label {
+  margin: 0 10px;
+}
+
+#creditScoreLabels {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 20px;
+}
+
+.score-label {
+  font-weight: normal;
+}
+
+.credit-score-word {
+  font-weight: bold;
+}
+
+.credit-score-number {
+  color: lightgrey;
+}
+
+.hidden {
+  display: none;
+}
+
+#creditScoreContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.card-hidden {
+  position: absolute;
+  left: -9999px;
+}
+
+
+.filter-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+label, .credit-score-label {
+font-size: 16px;
+font-weight: bold;
+
+}
+
+
+#monthlySpend {
+    background-color: transparent;
+    text-align: center;
+    font-size: 20px; /* Adjust as needed */
+    font-weight: bold;
+}
+
+
+input[type=number] {
+
+    padding:0px!important;
+}
+
+#annual_feeValue, #annualIncomeValue, .slider-label {
+    font-weight: bold;
+}
+
+#currencySymbol {
+    font-size: 20px; /* Match with the input field */
+    font-weight: bold;
+}
+
+
+label[for="filterheader"] {
+  /* your styles here */
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#cardCounter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.expanding-filter {
+    margin-top: 10px;
+    border: none; /* Remove border */
+    background: none; /* Remove background */
+    color: inherit; /* Inherit color from parent */
+    font: inherit; /* Inherit font from parent */
+    outline: inherit; /* Inherit outline from parent */
+    cursor: pointer; /* To maintain the cursor effect */
+    font-size: 18px;
+    /* color: #00965e; */
+    font-weight: bold;
+
+}
+
+.expanding-filter:hover {
+    margin-top: 10px;
+    border: none; /* Remove border */
+    background: none; /* Remove background */
+    color: inherit; /* Inherit color from parent */
+    font: inherit; /* Inherit font from parent */
+    outline: inherit; /* Inherit outline from parent */
+    cursor: pointer; /* To maintain the cursor effect */
+    font-size: 18px;
+    /* color: #00965e; */
+    font-weight: bold;
+
+}
+
+.accordion-button {
+  cursor: pointer;
+  border: none;
+  text-align: left;
+  outline: none;
+  transition: 0.4s;
+}
+
+.accordion-content {
+  padding: 0 18px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+
+div#moreFilters {
+    padding-top: 20px;
+}
+
+.chevron::before {
+	border-style: solid;
+	border-width: 0.2em 0.2em 0 0;
+	content: '';
+	display: inline-block;
+	height: 0.45em;
+	left: 0.15em;
+	position: relative;
+	top: 0.15em;
+	transform: rotate(-45deg);
+    margin-top: 3px;
+
+	vertical-align: top;
+	width: 0.45em;
+}
+
+.chevron.right:before {
+	left: 0;
+	transform: rotate(45deg);
+}
+
+.chevron.bottom:before {
+	top: 0;
+	transform: rotate(135deg);
+}
+
+.chevron.left:before {
+	left: 0.25em;
+	transform: rotate(-135deg);
+}
+
+@media screen and (min-width: 769px) {
+#filterSection {
+    margin-top:18px !important;
+}}
+
+
+/* mobile styles */
+@media screen and (max-width: 768px) {
+#filterSection {
+    display: none; /* Hide filters on mobile by default */
+}
+
+.card {
+    width: 100%; /* Full width cards on mobile for easier reading */
+}
+}
+
+@media screen and (min-width: 769px) {
+#filterButton {
+    display: none; /* Hide filter button on desktop */
+}
+
+#showResultsButton {
+    display: none; /* Hide filter button on desktop */
+}
+
+}
+
+@media screen and (max-width: 768px) {
+    #filterSection {
+        display: none; /* Hide filters on mobile by default */
+        position: fixed; /* Make the filter section fixed */
+        top: 0; /* Position it at the top */
+        left: 0; /* Position it at the left */
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Add scroll if content overflows */
+        background-color: white;
+        z-index: 1000; /* Make sure it's on top of other elements */
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    #filterSection.show {
+        display: block; /* Show filter section when 'show' class is added */
+    }
+
+    .filter-container {
+        margin-bottom: 20px; 
+    }
+
+    .card {
+        width: 100%; /* Full width cards on mobile for easier reading */
+    }
+
+    #filterButton {
+        display: block; /* Show filter button on mobile */
+    }
+}
+
+/* Add this class to your CSS */
+.visible {
+    display: block !important;
+
+}
+
+.hide {
+    display: none;
+}
+
+.show {
+    display: block;
+}
+
+
+
+@media screen and (max-width: 768px) {
+    #showResultsButton {
+        display: block;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 10px;
+        background-color: #007BFF; /* Change color as needed */
+        color: white; /* Change color as needed */
+        text-align: center;
+        border: none;
+        cursor: pointer;
+        z-index: 1001; /* Ensure it is on top of the filter section */
+    }
+}
+
+@media screen and (max-width: 768px) { #buttonWrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding-bottom: 20px;
+}}
+
+@media screen and (max-width: 768px) {
+h1.entry-title {
+    padding-top: 20px;
+}}
+
+
+.slider-labels-container {
+    padding-top:10px;
+    display: flex;
+    justify-content: space-between;
+    width: 15rem;
+}
+
+
+/********** Range Input Styles **********/
+/*Range Reset*/
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  width: 15rem;
+}
+
+
+
+/***** Chrome, Safari, Opera and Edge Chromium styles *****/
+/* slider track */
+input[type="range"]::-webkit-slider-runnable-track,
+input[type="range"]:active::-webkit-slider-runnable-track,
+input[type="range"]:focus {
+  background-color: rgba(79, 185, 101, 0.33);;
+  border-radius: 0.5rem;
+  height: 0.5rem;
+  box-shadow: none; /* Removes box-shadow */
+}
+
+/* slider thumb */
+input[type="range"]::-webkit-slider-thumb,
+input[type="range"]:active::-webkit-slider-thumb,
+input[type="range"]:focus::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  margin-top: -12px; /* Centers thumb on the track */
+  background-color: #00965e;
+  height: 2rem;
+  width: 1rem;
+  border: none;
+}
+
+/******** Firefox styles ********/
+/* slider track */
+input[type="range"]::-moz-range-track,
+input[type="range"]:active::-moz-range-track{
+  background-color: rgba(79, 185, 101, 0.33);;
+  border-radius: 0.5rem;
+  height: 0.5rem;
+  box-shadow: none; /* Removes box-shadow */
+}
+
+/* slider thumb */
+input[type="range"]::-moz-range-thumb,
+input[type="range"]:active::-moz-range-thumb,
+input[type="range"]:focus::-moz-range-thumb {
+  border: none; /*Removes extra border that FF applies*/
+  border-radius: 0; /*Removes default border-radius that FF applies*/
+  background-color: #00965e;
+  height: 2rem;
+  width: 1rem;
+  border: none;
+}
+
+.box-border-bot{
+    box-sizing: border-box; border-bottom: 1px solid #e5e5e5;
+}
+
+
+    </style>
+</head>
+<body>
+    
+    <div id="buttonWrapper">
+        <button id="filterButton" onclick="toggleFilters()">Filter</button>
+    </div>
+    <div id="mainContainer">
+        
+        
+        <div id="filterSection">
+            <div class="filter filter-container box-border-bot">
+                <label for="filterheader">What's your credit score?</label>
+                <input type="range" min="0" max="4" value="3" class="slider" id="creditScore">
+                <div id="creditScoreLabels">
+                    <span id="score0" class="credit-score-label"><span class="credit-score-word">Poor</span> <span class="credit-score-number">(300-559)</span></span>
+                    <span id="score1" class="credit-score-label"><span class="credit-score-word">Fair</span> <span class="credit-score-number">(560-659)</span></span>
+                    <span id="score2" class="credit-score-label"><span class="credit-score-word">Good</span> <span class="credit-score-number">(660-724)</span></span>
+                    <span id="score3" class="credit-score-label"><span class="credit-score-word">Very Good</span> <span class="credit-score-number">(725-759)</span></span>
+                    <span id="score4" class="credit-score-label"><span class="credit-score-word">Excellent</span> <span class="credit-score-number">(760-900)</span></span>
+                </div>
+            </div>
+            
+ <!-- For Cash/Travel -->
+ <div class="filter filter-container">
+    <label for="filterheader">What's important to you?</label>
+    <label for="cashTravel">Rewards</label>
+    <div class="slider-container">
+      
+      <input type="range" id="cashTravel" name="cashTravel" min="0" max="2" value="1">
+      
+    </div>
+    <div class="slider-labels-container">
+    <span class="slider-label">Cash</span>
+    <span class="slider-label">Travel</span>
+  </div></div>
+  <div class="filter filter-container">
+                <label for="insurance">Insurance</label>
+                <div class="slider-container">
+                  <input type="range" id="insurance" name="insurance" min="0" max="2" value="0">
+                </div>
+                <div class="slider-labels-container">
+                    <span class="slider-label">Less</span>
+                    <span class="slider-label">Very</span>
+                  </div>
+              </div>
+              
+            <!-- For interest rates -->
+            <div class="filter filter-container">
+    <label for="lowInterest">Interest Rates</label>
+    <div class="slider-container">
+      <input type="range" id="lowInterest" name="lowInterest" min="0" max="2" value="0">
+    </div>
+    <div class="slider-labels-container">
+        <span class="slider-label">Less</span>
+        <span class="slider-label">Very</span>
+      </div>
+  </div>
+  
+  <!-- For perks -->
+  <div class="filter filter-container">
+    <label for="perks">Perks</label>
+    <div class="slider-container">
+      <input type="range" id="perks" name="perks" min="0" max="2" value="0">
+    </div>
+    <div class="slider-labels-container">
+        <span class="slider-label">Less</span>
+        <span class="slider-label">Very</span>
+      </div>
+  </div>
+  <div class="filter filter-container box-border-bot">
+    <label for="filterheader">Your monthly spend</label>
+    <div style="display: flex; align-items: center;">
+        <div id="currencySymbol" style="margin-right: 5px;">$</div>
+        <input type="number" id="monthlySpend" name="monthlySpend" min="0" max="100000" value="2000">
+    </div>
+</div>
+
+<div class="filter filter-container ">
+<button id="showFiltersButton" onclick="showFunction()" class="expanding-filter">Show more filters <span class="chevron bottom"></span></button>
+<button id="hideFiltersButton" onclick="hideFunction()" style="display: none;" class="expanding-filter">Hide more filters <span class="chevron top"></span></button>
+</div>
+
+<div id="moreFilters" class="filter filter-container hide">
+            <div class="filter filter-container">
+                <label for="annual_fee">Maximum Annual Fee</label>
+                <input type="range" id="annual_fee" name="annual_fee" min="0" max="500" value="500" step="10">
+                <span id="annual_feeValue"></span>
+            </div>
+            <div class="filter filter-container">
+                <label for="annualIncome">Annual Income</label>
+                <input type="range" min="0" max="100000" value="100000" step="5000" class="slider" id="annualIncome">
+                <span id="annualIncomeValue" class="slider-value"></span>
+            </div>
+            <div class="filter filter-container">
+                <label>Card Type:</label>
+                <div>
+                    <input type="checkbox" id="Business" name="Business">
+                    <label for="Business">Business</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="firstYearFree" name="cardType">
+                    <label for="firstYearFree">First Year Free</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="foreignCurrencyBonus" name="cardType">
+                    <label for="foreignCurrencyBonus">Currency Bonus</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="lowIntroRate" name="cardType">
+                    <label for="lowIntroRate">Low Intro Rate</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="poorCredit" name="cardType">
+                    <label for="poorCredit">Poor Credit</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="student" name="cardType">
+                    <label for="student">Student</label>
+                </div>
+            </div>
+            </div>
+            <!-- <div id="cardCounter"></div> -->
+
+            <button id="showResultsButton" onclick="hideFilters()">Show Results</button>
+
+        </div>
+        <div id="cardSectionParent">
+        <div id="cardSection">
+            
+            <div class="card">
+            </div>
+            
+        </div><button id="seeMoreButton" onclick="seeMoreCards()">Click to See More Cards</button></div>
+        
+
+    </div>
+    
+
+
+
+    <script>
+        
+        let isDefaultDataDisplayed = true;
+
+function defaultCards() {
+    currentPage = 1;
+    
+const defaultCardData = {
+cards: [{
+    annual_fee: "155.88",
+    purchase_interest_rate: "20.99",
+    cash_advance_interest_rate: "21.99",
+    welcome_bonus: "30,000 points",
+    card_name: "American Express Cobalt",
+    photo: "https://www.dollarwise.ca/wp-content/uploads/2023/06/American-Express-Cobalt.png",
+    reward_bills: "3 points",
+    reward_drug: "1 point",
+    reward_gas: "1 point",
+    reward_grocery: "1 point",
+    reward_other: "3 points",
+    reward_restaurant: "3 points",
+    reward_store: "3 points",
+    reward_travel: "3 points",
+    max_reward: "0.67",
+    ProsCons: "HELLO",
+    Features: "TEST"
+
+}],
+totalCards: 1
+};
+
+filteredCards = defaultCardData;
+  displayCards(defaultCardData);
+}
+
+let currentCardIndex = 0;  // Keep this variable
+const cardsPerBatch = 5;
+
+function displayCards(cardsToDisplay, clearSection = true) {
+    const sectionElement = cardSection;  // Updated this line
+    if (clearSection) {
+        // If the clearSection parameter is true, remove all existing cards from the section
+        while (sectionElement.firstChild) {
+            sectionElement.removeChild(sectionElement.firstChild);
+        }
+    }
+    let template = document.getElementById('cardTemplate');  // Select template using its ID
+    let originalDisplay = window.getComputedStyle(template).display;
+
+    let cardsFromData = cardsToDisplay.cards;
+    console.log(cardsToDisplay.cards)
+
+    // Add a div for each card in the cards array:
+    for (let i = 0; i < cardsFromData.length; i++) {
+        let card = cardsFromData[i];
+
+        console.log(card);  // Print out the current card data
+
+        let cardDiv = template.cloneNode(true); // Clone the template
+        cardDiv.id = 'card' + (currentCardIndex + i); // Assign a unique id to the cloned div
+        cardDiv.classList.remove('card-hidden');
+        cardDiv.style.display = originalDisplay;
+
+    let string = '<figure class="wp-block-image aligncenter size-full"><img src="{{card.Photos}}" alt="" class="wp-image-3314"/></figure>';
+    let photoURL = card.Photos;
+    let updatedString = string.replace('{{card.Photos}}', photoURL);
+
+    // Call the function with the keys you're interested in
+    const keys = ["reward_bills", "reward_drug", "reward_gas", "reward_grocery", "reward_other", "reward_restaurant", "reward_store", "reward_travel"];
+    findMinMaxReward(card, keys);
+
+    annual_rew = calculateReward(card);
+
+    let cardHTML = cardDiv.innerHTML
+
+    .replace(/{{card\.lowInterest}}/g, card.purchase_interest_rate)
+    .replace(/{{card\.highInterest}}/g, card.cash_advance_interest_rate)
+    .replace(/{{card\.proscons}}/g, card.ProsCons)
+    .replace(/{{card\.features}}/g, card.Features)
+    .replace(/{{photo\.code}}/g, updatedString)
+    .replace(/{{review\.link}}/g, card.ReviewLink)
+    .replace(/{{buy\.link}}/g, card.BuyLink)
+    .replace(/{{card\.name}}/g, card.card_name);
+
+    
+
+    
+
+    if (card.welcome_bonus) {
+        cardHTML = cardHTML.replace(/{{card\.introOffer}}/g, ("Up to "+card.welcome_bonus));
+    } else {
+        // Remove the row if welcome_bonus is empty
+        let introOfferRow = '<tr><td>Intro Offer</td><td><strong>{{card.introOffer}}</strong></td></tr>';
+        cardHTML = cardHTML.replace(introOfferRow, '');
+    }
+
+    if (card.annual_fee == 0) {
+    cardHTML = cardHTML.replace(/{{card\.annualFee}}/g, "FREE");
+    } else {
+        var fee = parseFloat(card.annual_fee);
+        var formattedFee = '$' + fee.toFixed(0);
+        cardHTML = cardHTML.replace(/{{card\.annualFee}}/g, formattedFee);
+    }
+
+    if (annual_rew == 0) {
+        // Remove the row if welcome_bonus is empty
+        let rewRow = '<tr><td>Annual Rewards</td><td><strong>{{card.rewards}}</strong></td></tr>';
+        cardHTML = cardHTML.replace(rewRow, '');
+    } else {
+        
+        cardHTML = cardHTML.replace(/{{card\.rewards}}/g, annual_rew);
+    }
+
+
+    cardDiv.innerHTML = cardHTML;
+    cardSection.appendChild(cardDiv);
+
+
+    // Add event listener to cardSection for accordion functionality
+    cardDiv.addEventListener('click', function(event) {
+      // Check if the clicked element, its parent, or its grandparents are the accordion button
+      let target = event.target;
+      if (target.matches('.kt-blocks-accordion-header, .kt-accordion-panel, .kt-accordion-panel-hidden, .kt-blocks-accordion-header .kt-acccordion-button-label-show, .kt-blocks-accordion-title-wrap, .kt-blocks-accordion-title') || 
+          target.parentElement.matches('.kt-blocks-accordion-header, .kt-blocks-accordion-header kt-acccordion-button-label-show, .kt-blocks-accordion-title-wrap, .kt-blocks-accordion-title') ||
+          target.parentElement.parentElement.matches('.kt-blocks-accordion-header, .kt-blocks-accordion-header kt-acccordion-button-label-show, .kt-blocks-accordion-title-wrap, .kt-blocks-accordion-title')) {
+        let accordionPanel = target.closest('.kt-accordion-header-wrap').nextElementSibling;
+        accordionPanel.classList.toggle('kt-accordion-panel-hidden');
+        event.preventDefault(); // prevent the default action (if any)
+      }
+    });
+
+    if(i >= cardsPerBatch - 1){
+      break; // Stop after displaying cardsPerBatch cards
+    }
+  }
+
+  // Update the state of "See More" button
+  if (cardsToDisplay.totalCards > currentPage * cardsPerBatch) {
+    document.getElementById('seeMoreButton').style.display = 'block';
+  } else {
+    document.getElementById('seeMoreButton').style.display = 'block';
+  }
+}
+
+
+let currentPage = 0;  // Set the initial page to 0
+
+function seeMoreCards() {
+    // Regardless of whether default data or the first 5 cards are displayed,
+    // increment currentPage and fetch the next batch of cards
+    currentPage++;  
+    let filters = {
+        creditScore: document.getElementById('creditScore').value,
+        cashTravel: document.getElementById('cashTravel').value,
+        insurance: document.getElementById('insurance').value,
+        lowInterest: document.getElementById('lowInterest').value,
+      Business: document.getElementById('Business').checked,
+        // perks: document.getElementById('perks').value,
+        page: currentPage,
+        pageSize: cardsPerBatch,
+    };
+    getFilteredCreditCardData(filters).then(data => {
+        // Update filteredCards with the new batch of cards
+        filteredCards.cards = data.cards;
+        // Update the total number of cards
+        filteredCards.totalCards = data.totalCards;
+        // Process and display all accumulated cards
+        if (isDefaultDataDisplayed) {
+            displayCards(filteredCards, true);  // clearSection = true
+            isDefaultDataDisplayed = false;
+        } else {
+            displayCards(filteredCards, false);  // clearSection = false
+        }
+
+        // Update currentCardIndex
+        currentCardIndex += cardsPerBatch;
+
+        // Update the state of "See More" button
+        if (filteredCards.totalCards > currentCardIndex) {
+            document.getElementById('seeMoreButton').style.display = 'block';
+        } else {
+            document.getElementById('seeMoreButton').style.display = 'none';
+        }
+    });
+}
+
+
+
+
+
+
+
+
+
+function extractNumericalValue(rewardString) {
+    // Extract the first number in the string
+    const match = rewardString.match(/(\d+(\.\d+)?)/);
+    return match ? parseFloat(match[0]) : null;
+}
+
+let minRewardString = "";
+let maxRewardString = "";
+
+function findMinMaxReward(data, keys) {
+    let minRewardValue = Infinity;
+    let maxRewardValue = -Infinity;
+
+    // Loop through the specified keys
+    for (const key of keys) {
+        if (data.hasOwnProperty(key)) {
+            const rewardString = data[key];
+            const rewardValue = extractNumericalValue(rewardString);
+
+            // Skip if there is no numerical value
+            if (rewardValue === null) continue;
+
+            if (rewardValue < minRewardValue) {
+                minRewardValue = rewardValue;
+                minRewardString = rewardString;
+            }
+
+            if (rewardValue > maxRewardValue) {
+                maxRewardValue = rewardValue;
+                maxRewardString = rewardString;
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+function updateFilterDisplay(filterName) {
+  let filter = document.getElementById(filterName);
+  let display = document.getElementById(filterName + 'Value');
+  
+  let formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 0,
+  });
+  
+  display.textContent = formatter.format(filter.value);
+}
+
+
+function getFilteredCreditCardData(filters) {
+  // Convert the filters object to a URL-encoded string:
+  let params = new URLSearchParams(filters).toString();
+
+  console.log('Sending request with filters:', filters);
+
+  // Send a GET request to the server with the filters as query parameters:
+  return fetch(`https://www.dollarwise.ca/wp-json/get-cc-data/v1/cc_data/?${params}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('HTTP status ' + response.status);
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Server response:', data);  // Print out the server response
+      console.log('Execution time (in milliseconds):', data.executionTime);  // Print out the execution time
+      return data;
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+}
+
+
+
+
+
+let filteredCards;  // The full set of cards that match the current filter
+currentCardIndex = 0;  // The index of the next card to be displayed
+
+function filterCards() {
+    currentPage = 1;
+    isDefaultDataDisplayed = false;
+  // Get filter values from inputs:
+  let filters = {
+    creditScore: document.getElementById('creditScore').value,
+    cashTravel: document.getElementById('cashTravel').value,
+    insurance: document.getElementById('insurance').value,
+    lowInterest: document.getElementById('lowInterest').value,
+    // perks: document.getElementById('perks').value,
+    // annual_fee: document.getElementById('annual_fee').value,
+    // annualIncome: document.getElementById('annualIncome').value,
+
+      Business: document.getElementById('Business').checked,
+        //   firstYearFree: document.getElementById('firstYearFree').checked,
+    //   foreignCurrencyBonus: document.getElementById('foreignCurrencyBonus').checked,
+    //   lowIntroRate: document.getElementById('lowIntroRate').checked,
+    //   poorCredit: document.getElementById('poorCredit').checked,
+    //   student: document.getElementById('student').checked
+    page: currentPage,  // currentPage should be a variable tracking the current page
+    pageSize: cardsPerBatch,  // Use your variable for number of cards per batch as the page size
+   
+  };
+
+  // Fetch filtered cards from the server:
+  getFilteredCreditCardData(filters).then(data => {
+    filteredCards = data;
+    currentCardIndex = 0;  // Reset the index
+
+    // Clear the card section:
+    document.getElementById('cardSection').innerHTML = '';
+
+    // Display the first batch of filtered cards:
+    displayCards(filteredCards, true);  // clearSection = true
+  });
+}
+
+
+
+
+
+// Call filterCards() whenever a filter input changes:
+document.getElementById('filterSection').addEventListener('change', function() {
+  filterCards(true);
+});
+
+window.onload = function() {
+    // Call updateFilterDisplay() whenever a filter input changes:
+    for (let filter of ['annual_fee', 'annualIncome']) {
+        document.getElementById(filter).addEventListener('input', function() {
+            updateFilterDisplay(filter);
+        });
+    }
+
+    // Initialize filter displays and display all cards at first:
+    for (let filter of ['annual_fee', 'annualIncome']) {
+        updateFilterDisplay(filter);
+    }
+
+    filterCards();
+}
+
+let creditScoreSlider = document.getElementById('creditScore');
+creditScoreSlider.addEventListener('input', function() {
+  for (let i = 0; i <= 4; i++) {
+    let currentLabel = document.getElementById('score' + i);
+    if (i === Number(this.value)) {
+      currentLabel.style.display = 'inline';  // show the current label
+    } else {
+      currentLabel.style.display = 'none';  // hide other labels
+    }
+  }
+});
+creditScoreSlider.dispatchEvent(new Event('input'));  // trigger the input event manually
+
+
+let annualIncomeSlider = document.getElementById('annualIncome');
+let annualIncomeValue = document.getElementById('annualIncomeValue');
+
+// Format the number as a currency string
+function formatCurrency(num) {
+  if (typeof num !== 'number') {
+    console.error('Invalid argument to formatCurrency:', num);
+    return num;  // Return the original value
+  }
+  return '$' + num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+}
+
+
+// Initialize the value
+annualIncomeValue.textContent = formatCurrency(annualIncomeSlider.value);
+
+annualIncomeSlider.addEventListener('input', function() {
+  annualIncomeValue.textContent = formatCurrency(this.value);
+});
+
+function updateCardCounter() {
+    // get all cards
+    let allCards = document.querySelectorAll('.card'); // replace '.card' with your actual card class
+    // get only visible cards
+    let visibleCards = Array.from(allCards).filter(card => card.style.display !== 'none');
+}
+
+// Call this function every time the cards are filtered or otherwise updated
+updateCardCounter();
+
+function toggleFilters() {
+    let filterSection = document.getElementById('filterSection');
+    filterSection.classList.toggle('show');
+}
+
+function hideFilters() {
+
+    var element = document.getElementById("filterSection");
+  element.classList.remove("show");
+}
+
+function showFunction() {
+
+    var showFiltersButton = document.getElementById('showFiltersButton');
+    var hideFiltersButton = document.getElementById('hideFiltersButton');
+    var moreFilters = document.getElementById('moreFilters');
+
+
+    moreFilters.classList.remove('hide');
+    showFiltersButton.style.display = 'none';
+    hideFiltersButton.style.display = 'block';
+
+
+}
+
+function hideFunction() {
+
+var showFiltersButton = document.getElementById('showFiltersButton');
+var hideFiltersButton = document.getElementById('hideFiltersButton');
+var moreFilters = document.getElementById('moreFilters');
+
+
+moreFilters.classList.add('hide');
+showFiltersButton.style.display = 'block';
+hideFiltersButton.style.display = 'none';
+
+
+}
+
+let acc = document.getElementsByClassName("accordion-button");
+
+for (let i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    let panel = this.nextElementSibling;
+    if (panel.style.maxHeight) {
+      panel.style.maxHeight = null;
+    } else {
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    } 
+  });
+}
+
+
+
+function calculateReward(cardstocalc) {
+    var spend = 2000 * 12;  // Monthly spend to annual
+
+    var categories = {
+        'other': { 'spendPercent': 0.35, 'pointMultiplier': cardstocalc.reward_other },
+        'gas': { 'spendPercent': 0.10, 'pointMultiplier': cardstocalc.reward_gas },
+        'grocery': { 'spendPercent': 0.175, 'pointMultiplier': cardstocalc.reward_grocery },
+        'drug': { 'spendPercent': 0.05, 'pointMultiplier': cardstocalc.reward_drug },
+        'restaurant': { 'spendPercent': 0.075, 'pointMultiplier': cardstocalc.reward_restaurant },
+        'bills': { 'spendPercent': 0.15, 'pointMultiplier': cardstocalc.reward_bills },
+        'travel': { 'spendPercent': 0.05, 'pointMultiplier': cardstocalc.reward_travel },
+        'store': { 'spendPercent': 0.05, 'pointMultiplier': cardstocalc.reward_store }
+    };
+
+    var totalPoints = 0;
+    var match = cardstocalc.max_reward.match(/\d+\.?\d*/);
+    var pointValue = match ? parseFloat(match[0]) : 0;  // Point value from the JSON
+
+    var accumulatedSpend = 0;  // Accumulated spend for categories without a points multiplier
+
+    for (var category in categories) {
+        if (category === 'other') continue;  // Skip 'other' category
+
+        if (categories[category]['pointMultiplier'] && categories[category]['pointMultiplier'].includes('%')) {
+            var match = categories[category]['pointMultiplier'].match(/\d+\.?\d*/);
+            categories[category]['pointMultiplier'] = match ? parseFloat(match[0]) / 100 : 0;
+            pointValue = 1;
+        } else {
+            var match = categories[category]['pointMultiplier'].match(/\d+\.?\d*/);
+            categories[category]['pointMultiplier'] = match ? parseFloat(match[0]) / 100 : 0;
+        }
+
+        if (!categories[category]['pointMultiplier'] || isNaN(categories[category]['pointMultiplier'])) {
+            // If pointMultiplier is NaN or 0, accumulate the spend for this category
+            accumulatedSpend += categories[category]['spendPercent'];
+        } else {
+            // If pointMultiplier is not NaN or 0, calculate the points for this category
+            var categorySpend = spend * categories[category]['spendPercent'];
+            totalPoints += categorySpend * categories[category]['pointMultiplier'];
+        }
+    }
+
+    // Add accumulated spend to 'other' category, then calculate the points for 'other' category
+    categories['other']['spendPercent'] += accumulatedSpend;
+    var otherSpend = spend * categories['other']['spendPercent'];
+    var match = categories['other']['pointMultiplier'].match(/\d+\.?\d*/);
+    categories['other']['pointMultiplier'] = match ? parseFloat(match[0]) / 100 : 0;
+
+    totalPoints += otherSpend * categories['other']['pointMultiplier'];
+
+    var reward = totalPoints * pointValue;
+
+    return (reward.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+    }))
+}
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>
+
